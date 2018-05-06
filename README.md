@@ -1,1 +1,1 @@
-# SVM_Imagenes
+# MNIST

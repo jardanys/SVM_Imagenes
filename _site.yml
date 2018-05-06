@@ -1,0 +1,22 @@
+name: "Machine Learning"
+navbar:
+  title: "Machine Learning"
+  href: NoteBook_SVM.html
+  left:
+    - text: "SVM"
+      href: SVM.html
+    - text: "MNIST"
+      href: MNIST.html
+output:
+  html_document:
+    theme: cosmo
+    highlight: haddock
+    include:
+      after_body: footer2.html
+#      in_header: logo.html
+    css: styles.css
+    runtime: shiny
+    toc: yes
+    toc_float:
+      collapsed: true
+      smooth_scroll: false
