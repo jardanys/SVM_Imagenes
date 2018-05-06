@@ -42,6 +42,22 @@ for(k in Componentes){
 }
 
 resultados <- resultados[-1,]
+resultado <- resultados
+resultados$iteraciones <- c(1:120) 
+resultados$err_train <- as.numeric(resultados$err_train)
+resultados$err_test <- as.numeric(resultados$err_test)
 resultados
+
+saveRDS(resultados, "resultados.rds")
+
+ggplot(resultados, aes(x=iteraciones, y=err_train, colour="resid train")) + geom_line() +
+      geom_line(aes(x=iteraciones, y=err_test, colour="resid test")) + xlab("Iteraciones SVM") +
+      ylab("Resid Train & Test") + labs(title = "Total Iteraciones Supper Vector Machina", 
+                                          subtitle = "Resid Train vs Test")
+
+which.min(resultados$err_test) + 1
+
+resultado[which.min(resultado$err_test),]
+
 
 

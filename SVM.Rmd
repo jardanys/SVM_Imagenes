@@ -91,7 +91,7 @@ Se genera una base de datos con los resultados de todas las iteraciones teniendo
 - **Kernel**, para todas las posibilidades ("linear", "polynomial", "radial", "sigmoid")
 - **Cost**, para 0.1, 1, 10, 100, 1000.
 
-```{r svm, echo=TRUE}
+```{r svm, eval=FALSE}
 resultados <- data.frame(Componentes=0, Kernel=0, C=0, err_train=0, err_test=0)
 Componentes <- c(2, 10, 40, 60, 80, 100)
 kernel <- c("linear", "polynomial", "radial", "sigmoid")
@@ -112,7 +112,14 @@ for(k in Componentes){
 }
 
 resultados <- resultados[-1,]
+resultado <- resultados
+resultados$iteraciones <- c(1:120) 
+resultados$err_train <- as.numeric(resultados$err_train)
+resultados$err_test <- as.numeric(resultados$err_test)
+```
 
+```{r table, echo=TRUE}
+resultados <- readRDS("resultados.rds")
 kable(resultados, "html") %>%
   kable_styling("striped", full_width = F, position = "center") %>%
   scroll_box(width = "850px", height = "300px")
@@ -120,9 +127,25 @@ kable(resultados, "html") %>%
 
 ## RESULTADOS
 
+Se observan todas la iteraciones realizadas en terminos del error de entrenamiento y error de prueba
+
 ```{r resultados, echo=TRUE}
-X <- pc$x
-X_test <- pc_test
-y <- as.numeric(as.character(train_3_8[,785]))
-y_test <- as.numeric(as.character(test_3_8[,785]))
+
+ggplot(resultados, aes(x=iteraciones, y=err_train, colour="resid train")) + geom_line() +
+      geom_line(aes(x=iteraciones, y=err_test, colour="resid test")) + xlab("Iteraciones SVM") +
+      ylab("Resid Train & Test") + labs(title = "Total Iteraciones Supper Vector Machina", 
+                                          subtitle = "Resid Train vs Test")
 ```
+
+
+## MEJOR MODELO
+
+Para los datos el mejor modelo con menor error de prueba es el siguiente, tiene como parámetros un Kernel Radial, C=0.1 con un error en la base de prueba de 1% aproximadamente.
+
+```{r MejorModelo, echo=TRUE}
+which.min(resultados$err_test)
+resultados[which.min(resultados$err_test),]
+```
+
+
+
